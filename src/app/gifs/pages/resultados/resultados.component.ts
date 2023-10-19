@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GifsService } from '../services/gifs.service';
+import { GifsService } from '../../services/gifs-service/gifs.service';
 
 @Component({
   selector: 'app-resultados',

@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GifsPageComponent } from './gifs-page/gifs-page.component';
-import { BusquedaComponent } from './busqueda/busqueda.component';
-import { ResultadosComponent } from './resultados/resultados.component';
+
+import { SharedModule } from '../shared/shared.module';
+
+import { GifsPageComponent } from './pages/gifs-page/gifs-page.component';
+import { BusquedaComponent } from './components/busqueda/busqueda.component';
+import { ResultadosComponent } from './pages/resultados/resultados.component';
+import { GifsCardComponent } from './components/gifs-card/gifs-card.component';
 
 
 
@@ -10,13 +14,15 @@ import { ResultadosComponent } from './resultados/resultados.component';
   declarations: [
     GifsPageComponent,
     BusquedaComponent,
-    ResultadosComponent
+    ResultadosComponent,
+    GifsCardComponent
   ],
   exports:[
     GifsPageComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
   ]
 })
 export class GifsModule { }

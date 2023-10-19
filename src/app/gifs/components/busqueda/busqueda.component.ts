@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GifsService } from '../services/gifs.service';
+import { GifsService } from '../../services/gifs-service/gifs.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -18,9 +18,7 @@ export class BusquedaComponent implements OnInit {
 
   search(){
     const valor = this.txtSearch.nativeElement.value;
-    if(valor.trim().length === 0 ){
-      return;
-    }
+    if(valor.length === 0 ) return;
     this.gifsService.searchGifs(valor);
     this.txtSearch.nativeElement.value = '';
   }

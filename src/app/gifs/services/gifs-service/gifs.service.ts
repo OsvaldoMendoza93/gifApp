@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { Gif, SearchGifsResponse } from '../interfaces/gifs-response.interface';
+import { environment } from '../../../../environments/environment';
+import { Gif, SearchGifsResponse } from '../../interfaces/gifs-response.interface';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Gif, SearchGifsResponse } from '../interfaces/gifs-response.interface';
 export class GifsService {
   private apiURL: string = environment.endpointURL
   private apiKey: string = environment.apiKey;
-  private _historial: string[] = [];
+  private _historial: Array<string> = [];
 
   public resultados: Array<Gif> = []
 
@@ -24,20 +25,26 @@ export class GifsService {
     return [...this._historial]
   }
 
-  searchGifs(query:string){
-    query = query.trim().toLowerCase(); // trim borra espacios en blanco adelnate y atras, pasa el query a minusculas
+  private organizeHistory(query:string){
+    query = query.toLowerCase();
     if(!this._historial.includes(query)){
       this._historial.unshift(query);
       this._historial = this._historial.splice(0,10);
       localStorage.setItem('historial', JSON.stringify(this._historial));
     }
+  }
+
+  searchGifs(query:string){
+    this.organizeHistory(query)
     const params = new HttpParams()
     .set('api_key', this.apiKey)
     .set('limit', '10')
     .set('q', query)
-    this.http.get<SearchGifsResponse>(`${this.apiURL}/search`,{ params } )
-    .subscribe( (res) => {
-      this.resultados = res.data
+    this.http.get<SearchGifsResponse>(`${this.apiURL}/search`,{ params } ).pipe(
+      map(res => res.data)
+    )
+    .subscribe( (gifs) => {
+      this.resultados = gifs
       localStorage.setItem('resultado', JSON.stringify(this.resultados));
     });
   }
